@@ -1,0 +1,24 @@
+{
+  "tanggal": "23 Juni 2026",
+  "nomor_surat": "006/A/TPKB-ITS/2026",
+  "tujuan": "Wakil Rektor Bidang Kemahasiswaan",
+  "its": true,
+  "nama_kegiatan": "Bakti Sosial TPKB ITS 2026",
+  "hari_tanggal": "Senin, 29 Juni 2026",
+  "acara": "Kelas Algoritma Lanjutan",
+  "participants": [
+    { "nama": "Kevin Hartanto", "nrp": "5025231042", "jurusan": "Teknik Informatika" },
+    { "nama": "Lestari Dewi", "nrp": "5025231058", "jurusan": "Sistem Informasi" }
+  ],
+  "ketua": {
+    "jabatan": "Ketua TPKB ITS 2026",
+    "nama": "Nama Ketua",
+    "nrp": "5000000000"
+  },
+  "assets": {
+    "header": "sample/header.png",
+    "footer": "sample/footer.png",
+    "stempel": "sample/stempel.png",
+    "ttd": "sample/ttd.png"
+  }
+}
