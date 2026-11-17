@@ -1,8 +1,10 @@
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
+from fastapi.responses import JSONResponse
 
 from src.middleware.auth import ApiKeyMiddleware
 from src.routes import kepengurusan, surat
@@ -35,6 +37,16 @@ def custom_openapi():
 
 
 app.openapi = custom_openapi  # type: ignore
+
+
+@app.exception_handler(RequestValidationError)
+async def readable_validation_error(request: Request, exc: RequestValidationError):
+    """Flatten FastAPI's validation error list into one sentence the frontend can show."""
+    parts = []
+    for err in exc.errors():
+        field = ".".join(str(p) for p in err.get("loc", ()) if p != "body")
+        parts.append(f"{field}: {err.get('msg', 'tidak valid')}" if field else err.get("msg", "tidak valid"))
+    return JSONResponse(status_code=422, content={"detail": "Data tidak valid — " + "; ".join(parts)})
 
 app.add_middleware(
     CORSMiddleware,
