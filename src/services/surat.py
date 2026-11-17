@@ -22,9 +22,14 @@ async def _prepare(body: CreateSuratRequest, nomor: int | None = None) -> dict:
     """The number the letter will carry, Ketua config and image list, in one GAS call.
 
     Without `nomor` the number is the predicted next one. With `nomor` (editing)
-    it is the number of that existing letter, re-formatted with the kode in `body`.
+    it is the number of that existing letter, re-formatted with the kode and bulan
+    in `body` (both are part of the number, e.g. 006/B/TPKB-ITS/VI/2026).
     """
-    params: dict = {"nama_kepengurusan": body.nama_kepengurusan, "kode": body.metadata.kode}
+    params: dict = {
+        "nama_kepengurusan": body.nama_kepengurusan,
+        "kode": body.metadata.kode,
+        "bulan": body.metadata.bulan,
+    }
     if nomor is not None:
         params["nomor"] = nomor
     return await gas_client._get("prepareSurat", params)
