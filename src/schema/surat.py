@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, Literal
 
 from pydantic import BaseModel, Field, StringConstraints, field_validator
 
@@ -61,7 +61,50 @@ class PreviewSuratResponse(BaseModel):
 
 
 class FinalizeSuratResponse(BaseModel):
+    """Returned when a new letter is finalized and when an existing one is edited."""
+
     success: bool
+    # Running number (column NO. of the arsip). The dashboard addresses a letter by it.
+    nomor: int | None = None
     nomor_surat: str
     file_name: str
     url: str
+
+
+class SuratListItem(BaseModel):
+    """One row of the arsip, as the Arsip Surat dashboard lists it."""
+
+    # 0 when the arsip row has no valid number: such a row can only be looked at.
+    nomor: int
+    nomor_surat: str
+    bulan: str
+    tanggal: str
+    perihal: str
+    kode: str
+    status: Literal["aktif", "dibatalkan"]
+    # False for letters the app has no data of (made before the dashboard existed,
+    # or typed into the spreadsheet by hand) and for cancelled ones.
+    editable: bool
+    file_name: str
+    url: str
+    updated_at: str
+
+
+class SuratListResponse(BaseModel):
+    surat: list[SuratListItem]
+
+
+class SuratDetailResponse(SuratListItem):
+    # The data the letter was built from; None when the app does not have it.
+    form: CreateSuratRequest | None
+    # None when the PDF is no longer in Berkas Keluar.
+    pdf_base64: str | None
+
+
+class DeleteSuratResponse(BaseModel):
+    success: bool
+    nomor: int
+    nomor_surat: str
+    # "removed": it was the latest letter, so its number is free again.
+    # "cancelled": the arsip row is kept and marked, so the number stays taken.
+    mode: Literal["removed", "cancelled"]
