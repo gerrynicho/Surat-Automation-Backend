@@ -85,6 +85,8 @@ class SuratListItem(BaseModel):
     # False for letters the app has no data of (made before the dashboard existed,
     # or typed into the spreadsheet by hand) and for cancelled ones.
     editable: bool
+    # True for the last row of the arsip: deleting it frees its number.
+    is_latest: bool = False
     file_name: str
     url: str
     updated_at: str
