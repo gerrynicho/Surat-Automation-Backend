@@ -1,1 +1,10 @@
 .env
+typst/.cache/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Real signature and stamp: kept local, this repository is public
+typst/sample/ttd.png
+typst/sample/stempel.png
